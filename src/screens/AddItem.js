@@ -310,11 +310,19 @@ const AddItem = ({ navigation, route }) => {
    
         try {
 
-            for (const item of allItems) {
-                const stockItem = { status: item.status };
+            // for (const item of allItems) {
+            //     const stockItem = { status: item.status };
   
-                await dispatch(fetchEditStockRequest(item.id, stockItem));
-            }
+            //     await dispatch(fetchEditStockRequest(item.id, stockItem));
+            // }
+
+            const updatePromises = allItems.map(item => {
+                const stockItem = { status: item.status };
+                return dispatch(fetchEditStockRequest(item.id, stockItem));
+              });
+            
+              await Promise.all(updatePromises);
+
             if (selectedBodies.length > 0) {
                 rentalStatus.push(
                     ...selectedBodies.map(item => ({
