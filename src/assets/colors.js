@@ -1,0 +1,16 @@
+export const BLACK='#000000';
+export const PURPLE ='#D09ED3';
+export const LIGHT_PURPLE ='#FFF3FF';
+export const DARK_PURPLE = '#D97CDB';
+export const GREY = '#9F9F9F';
+export const WHITE ='#FFFFFF';
+export const PLACEHOLDER_COLOR = '#C9C9C9';
+export const BLUE_TEXT = 'rgb(65 8 258)';
+export const BUTTON_COLOR = '#8B5CF6';
+export const TEXT_COLOR ='#151515';
+export const TEXT_GREY ='#9A9A9A';
+export const TEXT_ORANGE = '#F06135';
+export const GREY_TEXT='#BFBFBF';
+export const GREEN ='#1FBC1F';
+export const EXPIRY_TEXT='#919191';
+export const ROYAL_BLUE='#00218D'

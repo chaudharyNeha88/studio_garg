@@ -1,131 +1,202 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LoginScreen from './src/screens/LoginScreen';
+import DashboardScreen from './src/screens/DashboardScreen';
+import ProfileScreen from './src/screens/ProfileScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { BackHandler, StyleSheet } from 'react-native';
+import { useRef } from 'react';
+import { ROYAL_BLUE, WHITE } from './src/assets/colors';
+import { View } from 'react-native';
+import { Image } from 'react-native';
+import ProductList from './src/screens/ProductList';
+import AddItem from './src/screens/AddItem';
+import { createDrawerNavigator} from '@react-navigation/drawer';
+import { DASHBOARD_ICON } from './src/assets/icon';
+import AllUsers from './src/screens/AllUsers';
+import CustomDrawerContent from './src/components/DrawerItem';
+import ListView from './src/screens/ListView';
+import CreateStockScreen from './src/screens/CreateStockScreen';
+import StockList from './src/screens/StockList';
+const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+function DrawerNavigator() {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  /*
-   * To keep the template simple and small we're adding padding to prevent view
-   * from rendering under the System UI.
-   * For bigger apps the reccomendation is to use `react-native-safe-area-context`:
-   * https://github.com/AppAndFlow/react-native-safe-area-context
-   *
-   * You can read more about it here:
-   * https://github.com/react-native-community/discussions-and-proposals/discussions/827
-   */
-  const safePadding = '5%';
-
-  return (
-    <View style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={{
+        drawerActiveTintColor: 'white', // Text color for active screen
+        drawerInactiveTintColor: '#888', // Text color for inactive screens
+        drawerActiveBackgroundColor: ROYAL_BLUE, // Background for active screen
+        drawerInactiveBackgroundColor: 'transparent', // No background for inactive screens
+        drawerStyle: { backgroundColor: '#f8f9fa', width: 250 }, // Overall drawer background
+        drawerLabelStyle: { fontSize: 16, fontFamily: 'Poppins-SemiBold' }, // Font styling
+      }}
+    >
+      <Drawer.Screen
+        name="Dashboard"
+        component={DashboardScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
       />
-      <ScrollView
-        style={backgroundStyle}>
-        <View style={{paddingRight: safePadding}}>
-          <Header/>
-        </View>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-            paddingHorizontal: safePadding,
-            paddingBottom: safePadding,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </View>
+      <Drawer.Screen
+        name="ProductList"
+        component={ProductList}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+      <Drawer.Screen
+        name="AddItem"
+        component={AddItem}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+      <Drawer.Screen
+        name="AddStock"
+        component={CreateStockScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+      <Drawer.Screen
+        name="StockList"
+        component={StockList}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+      <Drawer.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+      <Drawer.Screen
+        name="AllUsers"
+        component={AllUsers}
+        options={{
+          drawerIcon: ({ color, size }) => <Image source={DASHBOARD_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />,
+          headerStyle: { backgroundColor: ROYAL_BLUE },
+          headerTintColor: 'white',
+        }}
+      />
+    </Drawer.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+function App() {
+  const navigationRef = useRef()
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const checkAuthState = async () => {
+    try {
+      const user = await AsyncStorage.getItem('user');
+      if (user) {
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
+      }
+      setIsCheckingAuth(false);
+    } catch (error) {
+      setIsCheckingAuth(false);
+    }
+  };
+  useEffect(() => {
+    const handleBackPress = () => {
+      BackHandler.exitApp()
+      return true; // Prevents the default back action
+    };
+
+    checkAuthState();
+
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    return () => {
+      backHandler.remove();
+    };
+  }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <View style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+        <Image
+          source={require('./src/assets/splash_background.png')} // Replace with your PNG image path
+          style={{
+            width: 300, // Set the image width
+            height: 300, resizeMode: 'contain'
+          }}
+        />
+      </View>
+    );
+  }
+
+  return (
+    <Provider store={store}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName={isLoggedIn ? 'DrawerNavigator' : 'Login'}>
+          <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false, }} />
+          <Stack.Screen name="ListView" component={ListView} options={() => ({
+            title: 'Detail',
+            headerTitleStyle: {
+              fontSize: 20, // Change the font size
+              fontFamily: 'Poppins-SemiBold', // Change the font family
+              color: WHITE, // Change the font color
+            },
+            headerStyle: {
+              backgroundColor: ROYAL_BLUE
+            },
+            headerTintColor: WHITE,
+          })}  />
+          <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} options={{ headerShown: false, }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  );
+}
 
 export default App;
+const styles = StyleSheet.create({
+  logoutContainer: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#ddd',
+  },
+  logoutButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#d9534f',
+    padding: 12,
+    borderRadius: 8,
+  },
+  logoutText: {
+    color: 'white',
+    fontSize: 16,
+    marginLeft: 10,
+  },
+});
