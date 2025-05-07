@@ -39,6 +39,7 @@ const ProductList = ({ navigation }) => {
   const renderItem = ({ item }) => {
     return (
       <View key={item?._id} style={{ backgroundColor: WHITE, borderRadius: 8, width: '95%', padding: 10, borderWidth: 1, borderColor: ROYAL_BLUE, marginTop: 10, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }}>
+        <Text>{JSON.stringify(item,null,2)}</Text>
         {<TouchableOpacity onPress={() => navigation?.navigate('ListView', { data: item })} style={styles.dateTxt}>
           <View style={[styles.innerContainer, { borderBottomWidth: 1, borderColor: GREY }]}>
             <View style={{ width: '50%', borderRightWidth: 1, borderColor: GREY }}>

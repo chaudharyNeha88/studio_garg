@@ -57,12 +57,12 @@ function CustomDrawerContent(props) {
           onPress={() => props.navigation.navigate('Dashboard')}
         />
         <DrawerItem
-          label="Product List"
+          label="Order List"
           icon={({ color, size }) => <Image source={TICKET_ICON} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />}
           onPress={() => props.navigation.navigate('ProductList')}
         />
         <DrawerItem
-          label="Add Item"
+          label="Create Order"
           icon={({ color, size }) => <Image source={EDIT} style={{ width: 18, height: 18, marginRight: 10, tintColor: 'black' }} tintColor={color} />}
           onPress={() => props.navigation.navigate('AddItem')}
         />

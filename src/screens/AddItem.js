@@ -11,6 +11,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { fetchEditItemRequest } from '../store/actions/editItemAction';
 import { fetchStockListRequest } from '../store/actions/stockListAction';
 import { fetchEditStockRequest } from '../store/actions/editStockAction';
+import axios from 'axios';
 
 const AddItem = ({ navigation, route }) => {
     const dispatch = useDispatch();
@@ -453,6 +454,24 @@ const AddItem = ({ navigation, route }) => {
         }, [dispatch, navigation, dataCreateItem, data])
     );
 
+    const returnedHandler= async (item)=>{
+        
+
+        
+        try {
+            console.log("called")
+            const res= await axios.post(`http://192.168.19.236:5000/order/return`, {
+              bookingId:data?._id,
+              equipmentId:item?.id
+            });
+            console.log(res)
+          } catch (error) {
+            console.log(error)
+            throw new Error(error.response?.data?.error || 'Something went wrong');
+          }
+
+    }
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}
             refreshControl={
@@ -562,6 +581,9 @@ const AddItem = ({ navigation, route }) => {
                             borderRadius: 8
                         }}>
                             <Text>{item.label}</Text>
+                            <TouchableOpacity onPress={()=>returnedHandler(item)}>
+                                <Text>click me to Returned</Text>
+                            </TouchableOpacity>
                             <TouchableOpacity onPress={() => {
                                 // Remove from selected list
                                 setSelectedBodies(prev => prev.filter((_, i) => i !== index));
